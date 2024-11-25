@@ -1,0 +1,82 @@
+<div class="container mt-8">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-center text-primary mb-4">Lista de Pedidos</h2>
+    </div>
+  </div>
+
+  <!-- Pedidos Pendientes -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header bg-warning text-dark">
+      <h4 class="mb-0">Pedidos Pendientes</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Nombre del Artículo</th>
+              <th scope="col">Nombre del Cliente</th>
+              <th scope="col">Detalle</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pedido of pedidosPendientes">
+              <td>{{ pedido.nombreArticulo }}</td>
+              <td>{{ pedido.nombreCliente }}</td>
+              <td>{{ pedido.detalle }}</td>
+              <td>{{ pedido.precio | currency }}</td>
+              <td>
+                <button (click)="completarPedido(pedido.id!)" class="btn btn-success btn-sm">
+                  Completar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pedidos Completados -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0">Pedidos Completados</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Nombre del Artículo</th>
+              <th scope="col">Nombre del Cliente</th>
+              <th scope="col">Detalle</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pedido of pedidosCompletados">
+              <td>{{ pedido.nombreArticulo }}</td>
+              <td>{{ pedido.nombreCliente }}</td>
+              <td>{{ pedido.detalle }}</td>
+              <td>{{ pedido.precio | currency }}</td>
+              <td>
+                <span class="badge bg-success">Completado</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Total de Precios de Pedidos Completados -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-body text-center">
+      <h5 class="text-info">Total de Precios de Pedidos Completados: {{ totalPrecioCompletados | currency }}</h5>
+    </div>
+  </div>
+</div>

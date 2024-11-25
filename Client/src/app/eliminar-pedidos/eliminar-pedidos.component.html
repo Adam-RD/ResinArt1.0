@@ -1,0 +1,63 @@
+<div class="container mt-8">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-center text-primary mb-4">Lista de Pedidos</h2>
+    </div>
+  </div>
+
+  <!-- Pedidos Pendientes y Completados -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header bg-info text-white">
+      <h4 class="mb-0">Pedidos</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Nombre del Artículo</th>
+              <th scope="col">Nombre del Cliente</th>
+              <th scope="col">Detalle</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pedido of pedidosPendientes">
+              <td>{{ pedido.nombreArticulo }}</td>
+              <td>{{ pedido.nombreCliente }}</td>
+              <td>{{ pedido.detalle }}</td>
+              <td>{{ pedido.precio | currency }}</td>
+              <td>
+                <span class="badge bg-warning text-dark">Pendiente</span>
+              </td>
+              <td>
+                <button (click)="completarPedido(pedido.id!)" class="btn btn-success btn-sm me-2">
+                  Completar
+                </button>
+                <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+            <tr *ngFor="let pedido of pedidosCompletados">
+              <td>{{ pedido.nombreArticulo }}</td>
+              <td>{{ pedido.nombreCliente }}</td>
+              <td>{{ pedido.detalle }}</td>
+              <td>{{ pedido.precio | currency }}</td>
+              <td>
+                <span class="badge bg-success">Completado</span>
+              </td>
+              <td>
+                <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

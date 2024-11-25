@@ -1,0 +1,97 @@
+<div class="container mt-8">
+  <h2 class="text-center mb-4">Lista de Deudas</h2>
+
+  <!-- Totales -->
+  <div class="card shadow mb-4">
+    <div class="card-body bg-light">
+      <h5 class="text-primary">Totales</h5>
+      <ul class="list-unstyled">
+        <li><strong>Total Vendido:</strong> {{ totalPrecioTotal | currency }}</li>
+        <li><strong>Total Recaudado:</strong> {{ totalAporte | currency }}</li>
+        <li><strong>Deuda Total:</strong> {{ totalDeudaTotal | currency }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Deudas Pendientes -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-warning text-white">
+      <h5 class="mb-0">Deudas Pendientes</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Nombre del Artículo</th>
+            <th>Nombre del Cliente</th>
+            <th>Precio Total</th>
+            <th>Deuda Total</th>
+            <th>Aporte Actual</th>
+            <th>Estado</th>
+            <th>Aporte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deuda of deudas">
+            <ng-container *ngIf="!deuda.esDeudaCompleta">
+              <td>{{ deuda.nombreArticulo }}</td>
+              <td>{{ deuda.nombreCliente }}</td>
+              <td>{{ deuda.precioTotal | currency }}</td>
+              <td>{{ deuda.deudaTotal | currency }}</td>
+              <td>{{ deuda.aporte | currency }}</td>
+              <td><span class="badge bg-danger">Pendiente</span></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <input
+                    type="number"
+                    [(ngModel)]="deuda.aporte"
+                    class="form-control form-control-sm w-50 me-2"
+                    [attr.placeholder]="deuda.deudaTotal"
+                    [attr.max]="deuda.deudaTotal">
+                  <button
+                    (click)="agregarAporte(deuda.id, deuda.aporte); deuda.aporte = 0"
+                    class="btn btn-success btn-sm">
+                    Agregar Aporte
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Deudas Completadas -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Deudas Completadas</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Nombre del Artículo</th>
+            <th>Nombre del Cliente</th>
+            <th>Precio Total</th>
+            <th>Deuda Total</th>
+            <th>Aporte Actual</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deuda of deudas">
+            <ng-container *ngIf="deuda.esDeudaCompleta">
+              <td>{{ deuda.nombreArticulo }}</td>
+              <td>{{ deuda.nombreCliente }}</td>
+              <td>{{ deuda.precioTotal | currency }}</td>
+              <td>{{ deuda.deudaTotal | currency }}</td>
+              <td>{{ deuda.aporte | currency }}</td>
+              <td><span class="badge bg-primary">Completada</span></td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

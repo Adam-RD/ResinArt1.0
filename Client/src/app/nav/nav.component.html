@@ -1,0 +1,32 @@
+<nav class="navbar navbar-dark fixed-top bg-dark">
+  <div class="container-fluid">
+    <!-- Visible solo si el usuario NO está logueado -->
+    <a class="navbar-brand" routerLink="/login" *ngIf="!authService.isLoggedIn()">Resin Art</a>
+
+    <!-- Opciones visibles solo si el usuario ESTÁ logueado -->
+    <ul class="navbar-nav d-flex flex-row me-auto mb-2 mb-lg-0" *ngIf="authService.isLoggedIn()">
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/agregar-pedidos" routerLinkActive="active">Agregar Pedidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/eliminar-pedidos" routerLinkActive="active">Eliminar Pedidos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/deudas" routerLinkActive="active">Deudas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/agregar-deuda" routerLinkActive="active">Agregar Deuda</a>
+      </li>
+    </ul>
+
+    <!-- Botón de logout visible solo si el usuario ESTÁ logueado -->
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item" *ngIf="authService.isLoggedIn()">
+        <a class="nav-link" (click)="onLogout()">Salir</a>
+      </li>
+    </ul>
+  </div>
+</nav>

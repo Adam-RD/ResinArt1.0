@@ -1,0 +1,38 @@
+<div class="container mt-8">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center py-4">
+          <h4 class="mb-0">Agregar Pedido</h4>
+        </div>
+        <div class="card-body p-5">
+          <form (ngSubmit)="agregarPedido()">
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="nombreArticulo" class="form-label fw-bold text-secondary">Nombre del Artículo</label>
+                <input type="text" class="form-control form-control-lg" id="nombreArticulo" [(ngModel)]="pedido.nombreArticulo" name="nombreArticulo" required>
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="nombreCliente" class="form-label fw-bold text-secondary">Nombre del Cliente</label>
+                <input type="text" class="form-control form-control-lg" id="nombreCliente" [(ngModel)]="pedido.nombreCliente" name="nombreCliente" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="detalle" class="form-label fw-bold text-secondary">Detalle</label>
+                <textarea class="form-control form-control-lg" id="detalle" [(ngModel)]="pedido.detalle" name="detalle" rows="3"></textarea>
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="precio" class="form-label fw-bold text-secondary">Precio</label>
+                <input type="number" class="form-control form-control-lg" id="precio" [(ngModel)]="pedido.precio" name="precio" required>
+              </div>
+            </div>
+            <div class="d-grid gap-2 mt-5">
+              <button type="submit" class="btn btn-success btn-lg btn-block shadow">Agregar Pedido</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

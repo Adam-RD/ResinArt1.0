@@ -1,0 +1,58 @@
+<div class="container mt-8">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+        <!-- Encabezado -->
+        <div class="card-header bg-primary text-white text-center">
+          <h3 class="mb-0">Agregar Nueva Deuda</h3>
+        </div>
+        <!-- Cuerpo de la tarjeta -->
+        <div class="card-body p-4">
+          <form (ngSubmit)="agregarDeuda()">
+            <!-- Campo: Nombre del Artículo -->
+            <div class="form-group mb-4">
+              <label for="nombreArticulo" class="form-label fw-bold">Nombre del Artículo</label>
+              <input
+                type="text"
+                id="nombreArticulo"
+                [(ngModel)]="nuevaDeuda.nombreArticulo"
+                name="nombreArticulo"
+                class="form-control form-control-lg shadow-sm"
+                placeholder="Ejemplo: Llavero"
+                required>
+            </div>
+            <!-- Campo: Nombre del Cliente -->
+            <div class="form-group mb-4">
+              <label for="nombreCliente" class="form-label fw-bold">Nombre del Cliente</label>
+              <input
+                type="text"
+                id="nombreCliente"
+                [(ngModel)]="nuevaDeuda.nombreCliente"
+                name="nombreCliente"
+                class="form-control form-control-lg shadow-sm"
+                placeholder="Ejemplo: Juan Pérez"
+                required>
+            </div>
+            <!-- Campo: Precio Total -->
+            <div class="form-group mb-4">
+              <label for="precioTotal" class="form-label fw-bold">Precio Total</label>
+              <input
+                type="number"
+                id="precioTotal"
+                [(ngModel)]="nuevaDeuda.precioTotal"
+                name="precioTotal"
+                class="form-control form-control-lg shadow-sm"
+                placeholder="Ejemplo: 1500.00"
+                required
+                min="0.01">
+            </div>
+            <!-- Botón de Enviar -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success btn-lg shadow">Agregar Deuda</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
