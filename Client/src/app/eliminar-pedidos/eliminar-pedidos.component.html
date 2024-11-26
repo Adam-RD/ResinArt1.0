@@ -18,17 +18,24 @@
               <th scope="col">Nombre del Artículo</th>
               <th scope="col">Nombre del Cliente</th>
               <th scope="col">Detalle</th>
-              <th scope="col">Precio</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio por Unidad</th>
+              <th scope="col">Precio Total</th>
+              <th scope="col">Fecha de Creación</th>
               <th scope="col">Estado</th>
               <th scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
+            <!-- Pedidos Pendientes -->
             <tr *ngFor="let pedido of pedidosPendientes">
               <td>{{ pedido.nombreArticulo }}</td>
               <td>{{ pedido.nombreCliente }}</td>
               <td>{{ pedido.detalle }}</td>
-              <td>{{ pedido.precio | currency }}</td>
+              <td>{{ pedido.cantidad }}</td>
+              <td>{{ pedido.precioPorUnidad | currency }}</td>
+              <td>{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>  <!-- Calculando el Precio Total -->
+              <td>{{ pedido.fechaCreacion | date:'short' }}</td>  <!-- Mostrando la fecha de creación -->
               <td>
                 <span class="badge bg-warning text-dark">Pendiente</span>
               </td>
@@ -41,11 +48,15 @@
                 </button>
               </td>
             </tr>
+            <!-- Pedidos Completados -->
             <tr *ngFor="let pedido of pedidosCompletados">
               <td>{{ pedido.nombreArticulo }}</td>
               <td>{{ pedido.nombreCliente }}</td>
               <td>{{ pedido.detalle }}</td>
-              <td>{{ pedido.precio | currency }}</td>
+              <td>{{ pedido.cantidad }}</td>
+              <td>{{ pedido.precioPorUnidad | currency }}</td>
+              <td>{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>  <!-- Calculando el Precio Total -->
+              <td>{{ pedido.fechaCreacion | date:'short' }}</td>  <!-- Mostrando la fecha de creación -->
               <td>
                 <span class="badge bg-success">Completado</span>
               </td>

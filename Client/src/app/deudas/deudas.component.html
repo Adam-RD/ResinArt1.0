@@ -26,7 +26,6 @@
             <th>Nombre del Cliente</th>
             <th>Precio Total</th>
             <th>Deuda Total</th>
-            <th>Aporte Actual</th>
             <th>Estado</th>
             <th>Aporte</th>
           </tr>
@@ -38,22 +37,14 @@
               <td>{{ deuda.nombreCliente }}</td>
               <td>{{ deuda.precioTotal | currency }}</td>
               <td>{{ deuda.deudaTotal | currency }}</td>
-              <td>{{ deuda.aporte | currency }}</td>
               <td><span class="badge bg-danger">Pendiente</span></td>
               <td>
-                <div class="d-flex align-items-center">
-                  <input
-                    type="number"
-                    [(ngModel)]="deuda.aporte"
-                    class="form-control form-control-sm w-50 me-2"
-                    [attr.placeholder]="deuda.deudaTotal"
-                    [attr.max]="deuda.deudaTotal">
-                  <button
-                    (click)="agregarAporte(deuda.id, deuda.aporte); deuda.aporte = 0"
-                    class="btn btn-success btn-sm">
-                    Agregar Aporte
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  (click)="abrirModal(deuda)">
+                  Aportar
+                </button>
               </td>
             </ng-container>
           </tr>
@@ -75,7 +66,6 @@
             <th>Nombre del Cliente</th>
             <th>Precio Total</th>
             <th>Deuda Total</th>
-            <th>Aporte Actual</th>
             <th>Estado</th>
           </tr>
         </thead>
@@ -86,7 +76,6 @@
               <td>{{ deuda.nombreCliente }}</td>
               <td>{{ deuda.precioTotal | currency }}</td>
               <td>{{ deuda.deudaTotal | currency }}</td>
-              <td>{{ deuda.aporte | currency }}</td>
               <td><span class="badge bg-primary">Completada</span></td>
             </ng-container>
           </tr>
@@ -95,3 +84,32 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="aporteModal" tabindex="-1" aria-labelledby="aporteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aporteModalLabel">Agregar Aporte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="deudaSeleccionada">
+        <div class="mb-3">
+          <label for="aporteInput" class="form-label">Monto del Aporte</label>
+          <input
+            type="number"
+            id="aporteInput"
+            class="form-control"
+            [(ngModel)]="deudaSeleccionada.aporte"
+            [attr.max]="deudaSeleccionada.deudaTotal"
+            placeholder="Ingresa el monto">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarAporte()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

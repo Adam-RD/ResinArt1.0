@@ -7,3 +7,4 @@ export interface Deuda {
   aporte: number;
   esDeudaCompleta: boolean;
 }
+

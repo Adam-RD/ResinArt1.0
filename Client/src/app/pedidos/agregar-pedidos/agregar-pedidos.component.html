@@ -17,16 +17,30 @@
                 <input type="text" class="form-control form-control-lg" id="nombreCliente" [(ngModel)]="pedido.nombreCliente" name="nombreCliente" required>
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-6 mb-4">
                 <label for="detalle" class="form-label fw-bold text-secondary">Detalle</label>
                 <textarea class="form-control form-control-lg" id="detalle" [(ngModel)]="pedido.detalle" name="detalle" rows="3"></textarea>
               </div>
               <div class="col-md-6 mb-4">
-                <label for="precio" class="form-label fw-bold text-secondary">Precio</label>
-                <input type="number" class="form-control form-control-lg" id="precio" [(ngModel)]="pedido.precio" name="precio" required>
+                <label for="precioPorUnidad" class="form-label fw-bold text-secondary">Precio por Unidad</label>
+                <input type="number" class="form-control form-control-lg" id="precioPorUnidad" [(ngModel)]="pedido.precioPorUnidad" name="precioPorUnidad" required min="0.01" step="0.01">
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="cantidad" class="form-label fw-bold text-secondary">Cantidad</label>
+                <input type="number" class="form-control form-control-lg" id="cantidad" [(ngModel)]="pedido.cantidad" name="cantidad" required min="1">
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="precioTotal" class="form-label fw-bold text-secondary">Precio Total</label>
+                <input type="text" class="form-control form-control-lg" id="precioTotal" [value]="pedido.precioTotal | currency" disabled>
+              </div>
+            </div>
+
+            <!-- Botón de Enviar -->
             <div class="d-grid gap-2 mt-5">
               <button type="submit" class="btn btn-success btn-lg btn-block shadow">Agregar Pedido</button>
             </div>

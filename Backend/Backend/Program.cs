@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -32,14 +31,20 @@ builder.Services.AddCors(options =>
 });
 
 // Configuración de autenticación JWT
+var token = builder.Configuration.GetSection("AppSettings:Token").Value;
+
+if (string.IsNullOrEmpty(token))
+{
+    throw new InvalidOperationException("El token no está configurado en AppSettings.");
+}
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                builder.Configuration.GetSection("AppSettings:Token").Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(token)),
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -54,6 +59,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+
+// Habilitar CORS antes de la autenticación
+app.UseCors("PermitirTodo");
+
+// Habilitar autenticación y autorización
+app.UseAuthentication();
+app.UseAuthorization();
+
 // Manejo de excepciones global
 app.UseExceptionHandler(appBuilder =>
 {
@@ -66,13 +80,8 @@ app.UseExceptionHandler(appBuilder =>
 
 app.UseHttpsRedirection();
 
-// Habilitar CORS antes de la autenticación
-app.UseCors("PermitirTodo");
-
-// Habilitar autenticación y autorización
-app.UseAuthentication();
-app.UseAuthorization();
-
+// Registra controladores y rutas de fallback
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

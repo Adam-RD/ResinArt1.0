@@ -1,9 +1,11 @@
-
 export interface PedidoPendiente {
-  id?: number;  // Hacemos que `id` sea opcional, ya que no es necesario al crear un pedido nuevo
+  id?: number;
   nombreArticulo: string;
   nombreCliente: string;
   detalle?: string;
-  precio: number;
+  cantidad: number;
+  precioPorUnidad: number;
+  precioTotal?: number;
+  fechaCreacion: Date;  // Cambiado de string a Date
   estaCompletado: boolean;
 }

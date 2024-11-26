@@ -1,3 +1,14 @@
 .mt-8 {
-  margin-top: 8rem; /* Ajusta según tus necesidades */
+  margin-top: 8rem;
+}
+
+.input-aporte {
+  width: 50%;
+}
+
+
+@media (max-width: 576px) {
+  .input-aporte {
+    width: 100%;
+  }
 }

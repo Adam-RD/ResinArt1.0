@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /bazel-out
+/bin
+/obj
 
 # Node
 /node_modules
@@ -13,7 +15,7 @@ yarn-error.log
 
 # IDEs and editors
 .idea/
-.project
+/.project
 .classpath
 .c9/
 *.launch
