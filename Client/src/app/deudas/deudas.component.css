@@ -1,7 +1,5 @@
 /* ==== CONTENEDOR PRINCIPAL ==== */
-.container {
-  margin-top: 20px;
-}
+
 
 /* ==== TARJETA DE DEUDAS ==== */
 .card {
@@ -94,3 +92,5 @@
   background: linear-gradient(90deg, #343a40, #6c757d);
   color: #ffffff;
 }
+
+

@@ -29,6 +29,10 @@
   font-weight: bold;
   border-bottom: 2px solid #ffc107;
 }
+.container {
+  margin-top: 80px; /* Ajusta el valor según lo necesites */
+}
+
 
 /* ==== TABLAS ==== */
 .table-container {

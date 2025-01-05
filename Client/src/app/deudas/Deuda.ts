@@ -6,5 +6,6 @@ export interface Deuda {
   deudaTotal: number;
   aporte: number;
   esDeudaCompleta: boolean;
+  estado?: string;
 }
 

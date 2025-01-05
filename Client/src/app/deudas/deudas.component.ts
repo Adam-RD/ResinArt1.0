@@ -15,12 +15,13 @@ export class DeudasComponent implements OnInit {
   totalDeudaTotal: number = 0;
   totalAporte: number = 0;
 
-  deudaSeleccionada: Deuda | null = null; // Para manejar la deuda seleccionada en el modal
-  isLoading = false; // Estado del spinner de carga
+  deudaSeleccionada: Deuda | null = null;
+  aporteIngresado: number = 0;
+  isLoading = false;
 
   // Paginación
   currentPagePendientes: number = 1;
-  currentPageCompletados: number = 1;
+  currentPageCompletadas: number = 1;
   itemsPerPage = 5;
 
   constructor(private deudasService: DeudasService, private toastr: ToastrService) {}
@@ -29,57 +30,72 @@ export class DeudasComponent implements OnInit {
     this.getDeudas();
   }
 
-  // Obtener la lista de deudas desde el servicio
   getDeudas(): void {
     this.isLoading = true;
-    this.deudasService.getDeudas().subscribe(deudas => {
-      this.deudas = deudas.map(deuda => ({
-        ...deuda,
-        estado: deuda.deudaTotal === 0 ? 'Completada' : 'Pendiente' // Actualizar estado basado en deuda restante
-      }));
-      this.calcularTotales();
-      this.isLoading = false;
-    }, () => {
-      this.isLoading = false;
-      this.toastr.error('Error al cargar deudas', 'Error');
+    this.deudasService.getDeudas().subscribe({
+      next: (deudas) => {
+        this.deudas = deudas.map(deuda => ({
+          ...deuda,
+          estado: deuda.deudaTotal === 0 ? 'Completada' : 'Pendiente'
+        }));
+        this.calcularTotales();
+      },
+      error: () => {
+        this.deudas = [];
+        this.calcularTotales();
+        this.toastr.error('Error al cargar deudas', 'Error');
+      },
+      complete: () => this.isLoading = false
     });
   }
 
-  // Calcular los totales de las columnas
   calcularTotales(): void {
-    this.totalPrecioTotal = this.deudas.reduce((sum, deuda) => sum + deuda.precioTotal, 0);
-    this.totalDeudaTotal = this.deudas.reduce((sum, deuda) => sum + deuda.deudaTotal, 0);
-    this.totalAporte = this.deudas.reduce((sum, deuda) => sum + deuda.aporte, 0);
+    this.totalPrecioTotal = this.deudas.reduce((sum, deuda) => sum + (deuda.precioTotal || 0), 0);
+    this.totalDeudaTotal = this.deudas.reduce((sum, deuda) => sum + (deuda.deudaTotal || 0), 0);
+    this.totalAporte = this.deudas.reduce((sum, deuda) => sum + (deuda.aporte || 0), 0);
   }
 
-  // Abrir el modal para capturar el aporte
+  getDeudasPendientes(): Deuda[] {
+    return this.deudas.filter(d => d.estado === 'Pendiente');
+  }
+
+  getDeudasCompletadas(): Deuda[] {
+    return this.deudas.filter(d => d.estado === 'Completada');
+  }
+
   abrirModal(deuda: Deuda): void {
-    this.deudaSeleccionada = { ...deuda }; // Copia para evitar cambios directos
+    this.deudaSeleccionada = deuda;
+    this.aporteIngresado = 0;
     const modal = new bootstrap.Modal(document.getElementById('aporteModal')!);
     modal.show();
   }
 
-  // Guardar el aporte ingresado en el modal
+  cerrarModal(): void {
+    const modalElement = document.getElementById('aporteModal');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+      modal.hide();
+    }
+    this.deudaSeleccionada = null;
+    this.aporteIngresado = 0;
+  }
+
   guardarAporte(): void {
     if (!this.deudaSeleccionada) {
       this.toastr.error('No se pudo encontrar la deuda seleccionada.', 'Error');
       return;
     }
 
-    const { id, aporte, deudaTotal } = this.deudaSeleccionada;
-
-    if (aporte > deudaTotal) {
+    if (this.aporteIngresado > this.deudaSeleccionada.deudaTotal) {
       this.toastr.error('El aporte no puede ser mayor a la deuda restante.', 'Error');
       return;
     }
 
-    this.deudasService.addAporte(id, aporte).subscribe({
+    this.deudasService.addAporte(this.deudaSeleccionada.id, this.aporteIngresado).subscribe({
       next: () => {
         this.toastr.success('Aporte agregado correctamente.', 'Éxito');
-        this.getDeudas(); // Recargar la lista de deudas para reflejar los cambios
-        const modal = bootstrap.Modal.getInstance(document.getElementById('aporteModal')!);
-        modal?.hide();
-        this.deudaSeleccionada = null; // Limpiar la deuda seleccionada
+        this.getDeudas();
+        this.cerrarModal();
       },
       error: (err) => {
         this.toastr.error('Hubo un error al guardar el aporte.', 'Error');
