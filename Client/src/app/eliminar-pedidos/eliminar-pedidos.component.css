@@ -1,3 +1,114 @@
-.mt-8 {
-  margin-top: 8rem; /* Ajusta según tus necesidades */
+/* ==== CONTENEDOR PRINCIPAL ==== */
+.container {
+  margin-top: 20px;
+}
+
+/* ==== TARJETA DE PEDIDOS ==== */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ==== TABLAS ==== */
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background: linear-gradient(90deg, #007bff, #6610f2);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.table tbody tr:nth-of-type(even) {
+  background-color: #e9ecef;
+}
+
+.table tbody tr:hover {
+  background-color: #d6d8db;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* ==== ESTILOS PARA ESTADOS DE PEDIDOS ==== */
+.badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge.bg-success {
+  background-color: #28a745;
+  color: white;
+}
+
+/* ==== BOTONES ==== */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+/* ==== RESPONSIVIDAD ==== */
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .table .btn {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+  }
 }

@@ -14,6 +14,8 @@ import { AgregarDeudaComponent } from './agregar-deuda/agregar-deuda.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 
 
@@ -33,6 +35,7 @@ import { LoginComponent } from './login/login.component';
   ],
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

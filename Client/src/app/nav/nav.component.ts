@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../auth.service'; // Importa el servicio de autenticación
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,10 +8,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
+  @ViewChild('navbarNav') navbarNav!: ElementRef; // Referencia al menú de navegación
+  isLoggingOut = false;
+
   constructor(public authService: AuthService, private router: Router) {}
 
   onLogout(): void {
-    this.authService.logout(); // Llama al método para cerrar sesión
-    this.router.navigate(['/login']); // Redirige al login después de cerrar sesión
+    this.isLoggingOut = true;
+    this.authService.logout();
+
+    setTimeout(() => {
+      this.isLoggingOut = false;
+      this.router.navigate(['/login']);
+    }, 1500);
+  }
+
+  closeNavbar(): void {
+    if (this.navbarNav) {
+      const nav = this.navbarNav.nativeElement;
+      if (nav.classList.contains('show')) {
+        nav.classList.remove('show'); // Cierra el menú en dispositivos móviles
+      }
+    }
   }
 }

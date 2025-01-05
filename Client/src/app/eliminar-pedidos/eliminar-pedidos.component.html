@@ -1,73 +1,114 @@
-<div class="container mt-8">
+<div class="container mt-5">
   <div class="row">
     <div class="col-12">
-      <h2 class="text-center text-primary mb-4">Lista de Pedidos</h2>
+      <h2 class="text-center text-primary fw-bold mt-5">📦 Lista de Pedidos</h2>
     </div>
   </div>
 
-  <!-- Pedidos Pendientes y Completados -->
-  <div class="card mb-5 shadow-sm">
-    <div class="card-header bg-info text-white">
-      <h4 class="mb-0">Pedidos</h4>
+  <!-- SPINNER DE CARGA -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando pedidos...</span>
     </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover table-striped align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">Nombre del Artículo</th>
-              <th scope="col">Nombre del Cliente</th>
-              <th scope="col">Detalle</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio por Unidad</th>
-              <th scope="col">Precio Total</th>
-              <th scope="col">Fecha de Creación</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Pedidos Pendientes -->
-            <tr *ngFor="let pedido of pedidosPendientes">
-              <td>{{ pedido.nombreArticulo }}</td>
-              <td>{{ pedido.nombreCliente }}</td>
-              <td>{{ pedido.detalle }}</td>
-              <td>{{ pedido.cantidad }}</td>
-              <td>{{ pedido.precioPorUnidad | currency }}</td>
-              <td>{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>  <!-- Calculando el Precio Total -->
-              <td>{{ pedido.fechaCreacion | date:'short' }}</td>  <!-- Mostrando la fecha de creación -->
-              <td>
-                <span class="badge bg-warning text-dark">Pendiente</span>
-              </td>
-              <td>
-                <button (click)="completarPedido(pedido.id!)" class="btn btn-success btn-sm me-2">
-                  Completar
-                </button>
-                <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-            <!-- Pedidos Completados -->
-            <tr *ngFor="let pedido of pedidosCompletados">
-              <td>{{ pedido.nombreArticulo }}</td>
-              <td>{{ pedido.nombreCliente }}</td>
-              <td>{{ pedido.detalle }}</td>
-              <td>{{ pedido.cantidad }}</td>
-              <td>{{ pedido.precioPorUnidad | currency }}</td>
-              <td>{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>  <!-- Calculando el Precio Total -->
-              <td>{{ pedido.fechaCreacion | date:'short' }}</td>  <!-- Mostrando la fecha de creación -->
-              <td>
-                <span class="badge bg-success">Completado</span>
-              </td>
-              <td>
-                <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
-                  Eliminar
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  </div>
+
+  <!-- Contenido solo si no está cargando -->
+  <div *ngIf="!isLoading">
+    <!-- Tarjeta de Pedidos -->
+    <div class="card mb-5 shadow-sm">
+      <div class="card-header bg-info text-white">
+        <h4 class="mb-0">📋 Pedidos</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>Artículo</th>
+                <th>Cliente</th>
+                <th>Detalle</th>
+                <th>Cantidad</th>
+                <th>Precio Unidad</th>
+                <th>Precio Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Pedidos Pendientes -->
+              <tr *ngFor="let pedido of pedidosPendientes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPagePendientes }">
+                <td>{{ pedido.nombreArticulo }}</td>
+                <td>{{ pedido.nombreCliente }}</td>
+                <td>{{ pedido.detalle }}</td>
+                <td>{{ pedido.cantidad }}</td>
+                <td class="important">{{ pedido.precioPorUnidad | currency }}</td>
+                <td class="important">{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>
+                <td>{{ pedido.fechaCreacion | date:'short' }}</td>
+                <td>
+                  <span class="badge bg-warning text-dark">⏳ Pendiente</span>
+                </td>
+                <td class="text-center">
+                  <button (click)="completarPedido(pedido.id!)" class="btn btn-success btn-sm me-2">
+                    ✅ Completar
+                  </button>
+                  <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
+                    🗑️ Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Paginación -->
+          <pagination-controls (pageChange)="currentPagePendientes = $event" class="d-flex justify-content-center"></pagination-controls>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pedidos Completados -->
+    <div class="card mb-5 shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">✔️ Pedidos Completados</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>Artículo</th>
+                <th>Cliente</th>
+                <th>Detalle</th>
+                <th>Cantidad</th>
+                <th>Precio Unidad</th>
+                <th>Precio Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pedido of pedidosCompletados | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPageCompletados }">
+                <td>{{ pedido.nombreArticulo }}</td>
+                <td>{{ pedido.nombreCliente }}</td>
+                <td>{{ pedido.detalle }}</td>
+                <td>{{ pedido.cantidad }}</td>
+                <td class="important">{{ pedido.precioPorUnidad | currency }}</td>
+                <td class="important">{{ (pedido.cantidad * pedido.precioPorUnidad) | currency }}</td>
+                <td>{{ pedido.fechaCreacion | date:'short' }}</td>
+                <td>
+                  <span class="badge bg-success">✔️ Completado</span>
+                </td>
+                <td class="text-center">
+                  <button (click)="eliminarPedido(pedido.id!)" class="btn btn-danger btn-sm">
+                    🗑️ Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Paginación -->
+          <pagination-controls (pageChange)="currentPageCompletados = $event" class="d-flex justify-content-center"></pagination-controls>
+        </div>
       </div>
     </div>
   </div>

@@ -12,6 +12,12 @@ export class EliminarPedidosComponent implements OnInit {
 
   pedidosPendientes: PedidoPendiente[] = [];
   pedidosCompletados: PedidoPendiente[] = [];
+  isLoading = false;
+
+
+  currentPagePendientes: number = 1;
+  currentPageCompletados: number = 1;
+  itemsPerPage = 5;
 
   constructor(private pedidosService: PedidosService, private toastr: ToastrService) {}
 
@@ -20,17 +26,22 @@ export class EliminarPedidosComponent implements OnInit {
   }
 
   getPedidos(): void {
+    this.isLoading = true;
     this.pedidosService.getPedidos().subscribe(pedidos => {
       this.pedidosPendientes = pedidos.filter(pedido => !pedido.estaCompletado);
       this.pedidosCompletados = pedidos.filter(pedido => pedido.estaCompletado);
+      this.isLoading = false;
+    }, () => {
+      this.isLoading = false;
+      this.toastr.error('Error al cargar pedidos', 'Error');
     });
   }
 
   completarPedido(id: number): void {
     this.pedidosService.completePedido(id).subscribe(() => {
       this.toastr.success('Pedido completado correctamente', 'Éxito');
-      this.getPedidos(); // Recargar la lista de pedidos para reflejar los cambios
-    }, error => {
+      this.getPedidos();
+    }, () => {
       this.toastr.error('Hubo un error al completar el pedido', 'Error');
     });
   }
@@ -38,9 +49,9 @@ export class EliminarPedidosComponent implements OnInit {
   eliminarPedido(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
       this.pedidosService.deletePedido(id).subscribe(() => {
-        this.toastr.success(`Pedido con id ${id} eliminado.`, 'Éxito');
-        this.getPedidos(); // Recargar la lista de pedidos después de eliminar
-      }, error => {
+        this.toastr.success(`Pedido con ID ${id} eliminado`, 'Éxito');
+        this.getPedidos();
+      }, () => {
         this.toastr.error('Hubo un error al eliminar el pedido', 'Error');
       });
     }

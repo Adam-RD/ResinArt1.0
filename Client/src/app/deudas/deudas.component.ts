@@ -16,6 +16,12 @@ export class DeudasComponent implements OnInit {
   totalAporte: number = 0;
 
   deudaSeleccionada: Deuda | null = null; // Para manejar la deuda seleccionada en el modal
+  isLoading = false; // Estado del spinner de carga
+
+  // Paginación
+  currentPagePendientes: number = 1;
+  currentPageCompletados: number = 1;
+  itemsPerPage = 5;
 
   constructor(private deudasService: DeudasService, private toastr: ToastrService) {}
 
@@ -25,12 +31,17 @@ export class DeudasComponent implements OnInit {
 
   // Obtener la lista de deudas desde el servicio
   getDeudas(): void {
+    this.isLoading = true;
     this.deudasService.getDeudas().subscribe(deudas => {
       this.deudas = deudas.map(deuda => ({
         ...deuda,
         estado: deuda.deudaTotal === 0 ? 'Completada' : 'Pendiente' // Actualizar estado basado en deuda restante
       }));
       this.calcularTotales();
+      this.isLoading = false;
+    }, () => {
+      this.isLoading = false;
+      this.toastr.error('Error al cargar deudas', 'Error');
     });
   }
 
@@ -43,7 +54,7 @@ export class DeudasComponent implements OnInit {
 
   // Abrir el modal para capturar el aporte
   abrirModal(deuda: Deuda): void {
-    this.deudaSeleccionada = { ...deuda }; // Copia de la deuda seleccionada para evitar cambios directos
+    this.deudaSeleccionada = { ...deuda }; // Copia para evitar cambios directos
     const modal = new bootstrap.Modal(document.getElementById('aporteModal')!);
     modal.show();
   }

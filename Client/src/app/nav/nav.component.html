@@ -1,32 +1,43 @@
-<nav class="navbar navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-lg custom-navbar shadow-sm fixed-top">
   <div class="container-fluid">
-    <!-- Visible solo si el usuario NO está logueado -->
-    <a class="navbar-brand" routerLink="/login" *ngIf="!authService.isLoggedIn()">Resin Art</a>
+    <!-- Logo o nombre de la aplicación -->
+    <a class="navbar-brand fw-bold" routerLink="/login" *ngIf="!authService.isLoggedIn()">🖌 Resin Art</a>
 
-    <!-- Opciones visibles solo si el usuario ESTÁ logueado -->
-    <ul class="navbar-nav d-flex flex-row me-auto mb-2 mb-lg-0" *ngIf="authService.isLoggedIn()">
-      <li class="nav-item">
-        <a class="nav-link px-2" routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" routerLink="/agregar-pedidos" routerLinkActive="active">Agregar Pedidos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" routerLink="/eliminar-pedidos" routerLinkActive="active">Eliminar Pedidos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" routerLink="/deudas" routerLinkActive="active">Deudas</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" routerLink="/agregar-deuda" routerLinkActive="active">Agregar Deuda</a>
-      </li>
-    </ul>
+    <!-- Botón de menú en pantallas pequeñas -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <!-- Botón de logout visible solo si el usuario ESTÁ logueado -->
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item" *ngIf="authService.isLoggedIn()">
-        <a class="nav-link" (click)="onLogout()">Salir</a>
-      </li>
-    </ul>
+    <!-- Contenedor de enlaces -->
+    <div class="collapse navbar-collapse" id="navbarNav" #navbarNav>
+      <ul class="navbar-nav me-auto" *ngIf="authService.isLoggedIn()">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pedidos" routerLinkActive="active" (click)="closeNavbar()">📦 Pedidos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/agregar-pedidos" routerLinkActive="active" (click)="closeNavbar()">➕ Agregar Pedidos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/eliminar-pedidos" routerLinkActive="active" (click)="closeNavbar()">🗑️ Eliminar Pedidos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/deudas" routerLinkActive="active" (click)="closeNavbar()">💰 Deudas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/agregar-deuda" routerLinkActive="active" (click)="closeNavbar()">➕ Agregar Deuda</a>
+        </li>
+      </ul>
+
+      <!-- Botón de logout con spinner -->
+      <ul class="navbar-nav ms-auto" *ngIf="authService.isLoggedIn()">
+        <li class="nav-item">
+          <button class="btn btn-danger btn-logout d-flex align-items-center" (click)="onLogout()" [disabled]="isLoggingOut">
+            <span *ngIf="!isLoggingOut">🚪 Salir</span>
+            <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

@@ -19,6 +19,8 @@ export class AgregarDeudaComponent {
     esDeudaCompleta: false
   };
 
+  isLoading = false; 
+
   constructor(private deudasService: DeudasService, private toastr: ToastrService) {}
 
   agregarDeuda(): void {
@@ -28,16 +30,19 @@ export class AgregarDeudaComponent {
     }
 
     this.nuevaDeuda.deudaTotal = this.nuevaDeuda.precioTotal;
+    this.isLoading = true;
 
     this.deudasService.addDeuda(this.nuevaDeuda).subscribe({
       next: (deuda) => {
         console.log('Deuda añadida:', deuda);
         this.toastr.success('Deuda añadida correctamente', 'Éxito');
         this.resetForm();
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error al añadir la deuda:', err);
         this.toastr.error('Hubo un error al añadir la deuda', 'Error');
+        this.isLoading = false;
       }
     });
   }

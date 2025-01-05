@@ -1,13 +1,88 @@
-.nav-link.active {
-  font-weight: bold;
-  color: #ffcc00; /* Puedes cambiar este color por el que prefieras */
+/* ==== NAVBAR ESTILIZADA ==== */
+.custom-navbar {
+  background: linear-gradient(90deg, #1a237e, #673ab7);
+  color: #f8f9fa;
+  border-bottom: 3px solid #ffc107;
 }
 
-.navbar-brand {
-  font-size: 1.5rem;
+.custom-navbar .navbar-brand {
+  color: #f8f9fa;
+  font-size: 1.8rem;
   font-weight: bold;
-}
-.nav-link {
-  font-size: 1.1rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.05rem;
 }
 
+.custom-navbar .nav-link {
+  color: #f8f9fa;
+  transition: color 0.3s ease-in-out, font-weight 0.3s ease-in-out;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #ffeeba;
+  font-weight: bold;
+}
+
+.custom-navbar .nav-link.active {
+  color: #ffc107;
+  font-weight: bold;
+  border-bottom: 2px solid #ffc107;
+}
+
+/* ==== BOTÓN DE LOGOUT ==== */
+.logout-link {
+  font-weight: bold;
+  color: #e74c3c;
+  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.logout-link:hover {
+  color: #ff6b6b;
+  transform: scale(1.1);
+}
+
+/* ==== BOTÓN DE LOGOUT MEJORADO CON SPINNER ==== */
+.btn-logout {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+  color: white;
+  background: #dc3545;
+  border: none;
+}
+
+.btn-logout:hover {
+  background: #c82333;
+  transform: scale(1.05);
+}
+
+.btn-logout:disabled {
+  background: #dc3545 !important;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==== SPINNER DE CARGA ==== */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 8px;
+}
+
+/* ==== RESPONSIVIDAD ==== */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .custom-navbar .nav-link {
+    font-size: 0.9rem;
+  }
+
+  .btn-logout {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}

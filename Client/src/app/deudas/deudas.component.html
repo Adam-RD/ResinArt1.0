@@ -1,100 +1,81 @@
-<div class="container mt-8">
-  <h2 class="text-center mb-4">Lista de Deudas</h2>
+<div class="container mt-5">
+  <h2 class="text-center text-primary fw-bold mb-4">💰 Lista de Deudas</h2>
 
-  <!-- Totales -->
-  <div class="card shadow mb-4">
-    <div class="card-body bg-light">
-      <h5 class="text-primary">Totales</h5>
-      <ul class="list-unstyled">
-        <li><strong>Total Vendido:</strong> {{ totalPrecioTotal | currency }}</li>
-        <li><strong>Total Recaudado:</strong> {{ totalAporte | currency }}</li>
-        <li><strong>Deuda Total:</strong> {{ totalDeudaTotal | currency }}</li>
-      </ul>
+  <!-- SPINNER DE CARGA -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando deudas...</span>
     </div>
   </div>
 
-  <!-- Deudas Pendientes -->
-  <div class="card shadow mb-4">
-    <div class="card-header bg-warning text-white">
-      <h5 class="mb-0">Deudas Pendientes</h5>
+  <!-- Contenido solo si no está cargando -->
+  <div *ngIf="!isLoading">
+    <!-- Totales -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body bg-light">
+        <h5 class="text-primary fw-bold">📊 Totales</h5>
+        <ul class="list-unstyled">
+          <li><strong>Total Vendido:</strong> {{ totalPrecioTotal | currency }}</li>
+          <li><strong>Total Recaudado:</strong> {{ totalAporte | currency }}</li>
+          <li><strong>Deuda Total:</strong> {{ totalDeudaTotal | currency }}</li>
+        </ul>
+      </div>
     </div>
-    <div class="card-body">
-      <table class="table table-hover align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>Nombre del Artículo</th>
-            <th>Nombre del Cliente</th>
-            <th>Precio Total</th>
-            <th>Deuda Total</th>
-            <th>Estado</th>
-            <th>Aporte</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let deuda of deudas">
-            <ng-container *ngIf="!deuda.esDeudaCompleta">
-              <td>{{ deuda.nombreArticulo }}</td>
-              <td>{{ deuda.nombreCliente }}</td>
-              <td>{{ deuda.precioTotal | currency }}</td>
-              <td>{{ deuda.deudaTotal | currency }}</td>
-              <td><span class="badge bg-danger">Pendiente</span></td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-sm"
-                  (click)="abrirModal(deuda)">
-                  Aportar
-                </button>
-              </td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 
-  <!-- Deudas Completadas -->
-  <div class="card shadow mb-4">
-    <div class="card-header bg-success text-white">
-      <h5 class="mb-0">Deudas Completadas</h5>
-    </div>
-    <div class="card-body">
-      <table class="table table-hover align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>Nombre del Artículo</th>
-            <th>Nombre del Cliente</th>
-            <th>Precio Total</th>
-            <th>Deuda Total</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let deuda of deudas">
-            <ng-container *ngIf="deuda.esDeudaCompleta">
-              <td>{{ deuda.nombreArticulo }}</td>
-              <td>{{ deuda.nombreCliente }}</td>
-              <td>{{ deuda.precioTotal | currency }}</td>
-              <td>{{ deuda.deudaTotal | currency }}</td>
-              <td><span class="badge bg-primary">Completada</span></td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Deudas Pendientes -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">⚠️ Deudas Pendientes</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>Artículo</th>
+                <th>Cliente</th>
+                <th>Precio Total</th>
+                <th>Deuda Total</th>
+                <th>Estado</th>
+                <th>Aporte</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let deuda of deudas | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPagePendientes }">
+                <td>{{ deuda.nombreArticulo }}</td>
+                <td>{{ deuda.nombreCliente }}</td>
+                <td class="important">{{ deuda.precioTotal | currency }}</td>
+                <td class="important">{{ deuda.deudaTotal | currency }}</td>
+                <td>
+                  <span class="badge bg-danger">⏳ Pendiente</span>
+                </td>
+                <td>
+                  <button class="btn btn-primary btn-sm fw-bold" (click)="abrirModal(deuda)">
+                    💵 Aportar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Paginación -->
+          <pagination-controls (pageChange)="currentPagePendientes = $event" class="d-flex justify-content-center"></pagination-controls>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<!-- Modal -->
+
+<!-- Modal de Aporte -->
 <div class="modal fade" id="aporteModal" tabindex="-1" aria-labelledby="aporteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="aporteModalLabel">Agregar Aporte</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="aporteModalLabel">💵 Agregar Aporte</h5>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" *ngIf="deudaSeleccionada">
         <div class="mb-3">
-          <label for="aporteInput" class="form-label">Monto del Aporte</label>
+          <label for="aporteInput" class="form-label fw-bold">Monto del Aporte</label>
           <input
             type="number"
             id="aporteInput"
@@ -106,10 +87,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="guardarAporte()">Guardar</button>
+        <button type="button" class="btn btn-primary fw-bold" (click)="guardarAporte()">💾 Guardar</button>
       </div>
     </div>
   </div>
 </div>
-
-

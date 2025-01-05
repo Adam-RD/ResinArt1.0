@@ -1,3 +1,44 @@
-.mt-8 {
-  margin-top: 8rem; /* Ajusta según tus necesidades */
+
+.container {
+  margin-top: 30px;
+}
+
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+
+.form-control {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 12px;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .form-control {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+  }
 }

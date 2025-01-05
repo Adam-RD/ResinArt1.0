@@ -1,17 +1,24 @@
-<div class="container mt-8">
+<div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
+    <div class="col-md-8 col-lg-6 mt-5">
       <div class="card shadow-lg border-0">
         <!-- Encabezado -->
         <div class="card-header bg-primary text-white text-center">
-          <h3 class="mb-0">Agregar Nueva Deuda</h3>
+          <h3 class="mb-0">➕ Agregar Nueva Deuda</h3>
         </div>
         <!-- Cuerpo de la tarjeta -->
         <div class="card-body p-4">
+          <!-- SPINNER DE CARGA -->
+          <div *ngIf="isLoading" class="d-flex justify-content-center mb-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Guardando...</span>
+            </div>
+          </div>
+
           <form (ngSubmit)="agregarDeuda()">
             <!-- Campo: Nombre del Artículo -->
             <div class="form-group mb-4">
-              <label for="nombreArticulo" class="form-label fw-bold">Nombre del Artículo</label>
+              <label for="nombreArticulo" class="form-label fw-bold">🛍️ Nombre del Artículo</label>
               <input
                 type="text"
                 id="nombreArticulo"
@@ -23,7 +30,7 @@
             </div>
             <!-- Campo: Nombre del Cliente -->
             <div class="form-group mb-4">
-              <label for="nombreCliente" class="form-label fw-bold">Nombre del Cliente</label>
+              <label for="nombreCliente" class="form-label fw-bold">🙍 Nombre del Cliente</label>
               <input
                 type="text"
                 id="nombreCliente"
@@ -35,7 +42,7 @@
             </div>
             <!-- Campo: Precio Total -->
             <div class="form-group mb-4">
-              <label for="precioTotal" class="form-label fw-bold">Precio Total</label>
+              <label for="precioTotal" class="form-label fw-bold">💲 Precio Total</label>
               <input
                 type="number"
                 id="precioTotal"
@@ -48,7 +55,9 @@
             </div>
             <!-- Botón de Enviar -->
             <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-success btn-lg shadow">Agregar Deuda</button>
+              <button type="submit" class="btn btn-success btn-lg shadow fw-bold" [disabled]="isLoading">
+                💾 {{ isLoading ? 'Guardando...' : 'Agregar Deuda' }}
+              </button>
             </div>
           </form>
         </div>

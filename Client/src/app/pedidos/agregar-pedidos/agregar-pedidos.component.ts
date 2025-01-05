@@ -9,8 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./agregar-pedidos.component.css']
 })
 export class AgregarPedidosComponent {
-
-  totalPrecioCompletados: number = 0;
+  isLoading = false; // Estado del spinner de carga
 
   pedido: PedidoPendiente = {
     nombreArticulo: '',
@@ -41,16 +40,20 @@ export class AgregarPedidosComponent {
     // Calculamos el precio total
     this.actualizarPrecioTotal();
 
+    this.isLoading = true; // Activar el spinner
+
     // Ahora creamos el pedido
     this.pedidosService.createPedido(this.pedido).subscribe({
       next: (nuevoPedido) => {
         console.log('Pedido agregado:', nuevoPedido);
         this.toastr.success('Pedido agregado correctamente', 'Éxito');
         this.resetForm();
+        this.isLoading = false; // Desactivar el spinner
       },
       error: (err) => {
         console.error('Error al agregar el pedido:', err);
         this.toastr.error('Hubo un error al agregar el pedido', 'Error');
+        this.isLoading = false; // Desactivar el spinner en caso de error
       }
     });
   }

@@ -1,32 +1,41 @@
-<div *ngIf="!isLoggedIn()" class="container d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f8f9fa;">
-  <div class="card shadow-lg" style="width: 30rem; border-radius: 15px;">
-    <div class="card-body p-4">
-      <h3 class="card-title text-center mb-4" style="color: #0d6efd;">Login</h3>
+<div *ngIf="!isLoggedIn()" class="container d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-lg p-4" style="width: 30rem; border-radius: 15px;">
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4 text-primary">🔐 Iniciar Sesión</h3>
       <form (ngSubmit)="onLogin()">
         <div class="mb-3">
-          <label for="username" class="form-label fw-bold">Usuario</label>
+          <label for="username" class="form-label fw-bold">👤 Usuario</label>
           <input
             type="text"
             class="form-control shadow-sm"
             id="username"
             [(ngModel)]="username"
             name="username"
-            placeholder="Digita tu usuario"
+            placeholder="Ingresa tu usuario"
             required>
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label fw-bold">Contraseña </label>
+          <label for="password" class="form-label fw-bold">🔑 Contraseña</label>
           <input
             type="password"
             class="form-control shadow-sm"
             id="password"
             [(ngModel)]="password"
             name="password"
-            placeholder="Digita tu contraseña"
+            placeholder="Ingresa tu contraseña"
             required>
         </div>
+        <!-- SPINNER DE CARGA -->
+        <div *ngIf="isLoading" class="d-flex justify-content-center my-3">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary btn-lg shadow-sm">Login</button>
+          <button type="submit" class="btn btn-primary btn-lg shadow-sm fw-bold" [disabled]="isLoading">
+            <span *ngIf="!isLoading">🔓 Iniciar Sesión</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span>
+          </button>
         </div>
       </form>
       <div *ngIf="errorMessage" class="text-danger mt-3 text-center fw-bold">

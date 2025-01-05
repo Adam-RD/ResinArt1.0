@@ -3,46 +3,55 @@
     <div class="col-lg-8 col-md-10">
       <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white text-center py-4">
-          <h4 class="mb-0">Agregar Pedido</h4>
+          <h4 class="mb-0">➕ Agregar Pedido</h4>
         </div>
         <div class="card-body p-5">
+          <!-- SPINNER DE CARGA -->
+          <div *ngIf="isLoading" class="d-flex justify-content-center mb-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Guardando...</span>
+            </div>
+          </div>
+
           <form (ngSubmit)="agregarPedido()">
             <div class="row">
               <div class="col-md-6 mb-4">
-                <label for="nombreArticulo" class="form-label fw-bold text-secondary">Nombre del Artículo</label>
+                <label for="nombreArticulo" class="form-label fw-bold text-secondary">🛍️ Nombre del Artículo</label>
                 <input type="text" class="form-control form-control-lg" id="nombreArticulo" [(ngModel)]="pedido.nombreArticulo" name="nombreArticulo" required>
               </div>
               <div class="col-md-6 mb-4">
-                <label for="nombreCliente" class="form-label fw-bold text-secondary">Nombre del Cliente</label>
+                <label for="nombreCliente" class="form-label fw-bold text-secondary">🙍 Nombre del Cliente</label>
                 <input type="text" class="form-control form-control-lg" id="nombreCliente" [(ngModel)]="pedido.nombreCliente" name="nombreCliente" required>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-4">
-                <label for="detalle" class="form-label fw-bold text-secondary">Detalle</label>
+                <label for="detalle" class="form-label fw-bold text-secondary">📝 Detalle</label>
                 <textarea class="form-control form-control-lg" id="detalle" [(ngModel)]="pedido.detalle" name="detalle" rows="3"></textarea>
               </div>
               <div class="col-md-6 mb-4">
-                <label for="precioPorUnidad" class="form-label fw-bold text-secondary">Precio por Unidad</label>
-                <input type="number" class="form-control form-control-lg" id="precioPorUnidad" [(ngModel)]="pedido.precioPorUnidad" name="precioPorUnidad" required min="0.01" step="0.01">
+                <label for="precioPorUnidad" class="form-label fw-bold text-secondary">💲 Precio por Unidad</label>
+                <input type="number" class="form-control form-control-lg" id="precioPorUnidad" [(ngModel)]="pedido.precioPorUnidad" name="precioPorUnidad" (input)="actualizarPrecioTotal()" required min="0.01" step="0.01">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-4">
-                <label for="cantidad" class="form-label fw-bold text-secondary">Cantidad</label>
-                <input type="number" class="form-control form-control-lg" id="cantidad" [(ngModel)]="pedido.cantidad" name="cantidad" required min="1">
+                <label for="cantidad" class="form-label fw-bold text-secondary">🔢 Cantidad</label>
+                <input type="number" class="form-control form-control-lg" id="cantidad" [(ngModel)]="pedido.cantidad" name="cantidad" (input)="actualizarPrecioTotal()" required min="1">
               </div>
               <div class="col-md-6 mb-4">
-                <label for="precioTotal" class="form-label fw-bold text-secondary">Precio Total</label>
+                <label for="precioTotal" class="form-label fw-bold text-secondary">💰 Precio Total</label>
                 <input type="text" class="form-control form-control-lg" id="precioTotal" [value]="pedido.precioTotal | currency" disabled>
               </div>
             </div>
 
             <!-- Botón de Enviar -->
             <div class="d-grid gap-2 mt-5">
-              <button type="submit" class="btn btn-success btn-lg btn-block shadow">Agregar Pedido</button>
+              <button type="submit" class="btn btn-success btn-lg btn-block shadow" [disabled]="isLoading">
+                💾 {{ isLoading ? 'Guardando...' : 'Agregar Pedido' }}
+              </button>
             </div>
           </form>
         </div>
