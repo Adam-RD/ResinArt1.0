@@ -1,5 +1,7 @@
 /* ==== CONTENEDOR PRINCIPAL ==== */
-
+.container {
+  margin-top: 80px; /* Ajusta este valor según la distancia con el navbar */
+}
 
 /* ==== TARJETA DE DEUDAS ==== */
 .card {
@@ -9,7 +11,7 @@
 
 /* ==== TABLAS ==== */
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto; /* Permite desplazamiento horizontal en móviles */
   border-radius: 8px;
   background: #ffffff;
   padding: 10px;
@@ -93,4 +95,91 @@
   color: #ffffff;
 }
 
+/* ==== RESPONSIVIDAD ==== */
+@media (max-width: 768px) {
+  .container {
+    margin-top: 60px;
+    padding: 10px;
+  }
 
+  .table th,
+  .table td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .table .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  }
+
+  .modal-content {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin-top: 50px;
+    padding: 8px;
+  }
+
+  .table-container {
+    padding: 8px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .table .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .modal-content {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    margin-top: 40px;
+    padding: 5px;
+  }
+
+  .table-container {
+    padding: 5px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+  }
+
+  .btn {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .modal-content {
+    padding: 5px;
+  }
+}
