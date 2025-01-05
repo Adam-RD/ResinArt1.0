@@ -29,14 +29,10 @@
   font-weight: bold;
   border-bottom: 2px solid #ffc107;
 }
-.container {
-  margin-top: 80px; /* Ajusta el valor según lo necesites */
-}
-
 
 /* ==== TABLAS ==== */
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto; /* Permite desplazamiento en móviles */
   border-radius: 10px;
   background: #ffffff;
   padding: 15px;
@@ -107,6 +103,14 @@
 
 /* ==== RESPONSIVIDAD ==== */
 @media (max-width: 768px) {
+  .custom-navbar {
+    padding: 5px;
+  }
+
+  .custom-navbar .navbar-brand {
+    font-size: 1.6rem;
+  }
+
   .table th,
   .table td {
     font-size: 0.85rem;
@@ -118,7 +122,64 @@
     font-size: 0.8rem;
   }
 
-  .navbar-brand {
-    font-size: 1.6rem;
+  .container {
+    margin-top: 60px; /* Reduce el espacio en pantallas pequeñas */
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-navbar .navbar-brand {
+    font-size: 1.4rem;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .table .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .container {
+    margin-top: 50px;
+    padding: 10px;
+  }
+
+  .table-container {
+    padding: 10px;
+  }
+
+  .btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .custom-navbar .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .table-container {
+    padding: 5px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.7rem;
+    padding: 0.4rem;
+  }
+
+  .btn {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .container {
+    margin-top: 40px;
+    padding: 5px;
   }
 }

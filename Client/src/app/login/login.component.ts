@@ -12,7 +12,8 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
-  isLoading: boolean = false; // Estado del spinner de carga
+  isLoading: boolean = false;
+  
 
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
@@ -22,14 +23,14 @@ export class LoginComponent {
       return;
     }
 
-    this.isLoading = true; // Activar el spinner
+    this.isLoading = true;
 
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.toastr.success('Inicio de sesión exitoso', 'Bienvenido');
         this.router.navigate(['/pedidos']);
-        this.isLoading = false; // Desactivar el spinner
+        this.isLoading = false;
       },
       error: (err) => {
         this.errorMessage = 'Usuario o contraseña incorrectos';
