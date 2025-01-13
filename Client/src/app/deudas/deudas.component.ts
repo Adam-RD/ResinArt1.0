@@ -11,6 +11,9 @@ import * as bootstrap from 'bootstrap';
 })
 export class DeudasComponent implements OnInit {
   deudas: Deuda[] = [];
+  deudasPendientes: Deuda[] = [];
+  deudasCompletadas: Deuda[] = [];
+
   totalPrecioTotal: number = 0;
   totalDeudaTotal: number = 0;
   totalAporte: number = 0;
@@ -39,6 +42,7 @@ export class DeudasComponent implements OnInit {
           estado: deuda.deudaTotal === 0 ? 'Completada' : 'Pendiente'
         }));
         this.calcularTotales();
+        this.actualizarListas();
       },
       error: () => {
         this.deudas = [];
@@ -55,26 +59,33 @@ export class DeudasComponent implements OnInit {
     this.totalAporte = this.deudas.reduce((sum, deuda) => sum + (deuda.aporte || 0), 0);
   }
 
-  getDeudasPendientes(): Deuda[] {
-    return this.deudas.filter(d => d.estado === 'Pendiente');
-  }
-
-  getDeudasCompletadas(): Deuda[] {
-    return this.deudas.filter(d => d.estado === 'Completada');
+  actualizarListas(): void {
+    this.deudasPendientes = this.deudas.filter(d => d.estado === 'Pendiente');
+    this.deudasCompletadas = this.deudas.filter(d => d.estado === 'Completada');
   }
 
   abrirModal(deuda: Deuda): void {
     this.deudaSeleccionada = deuda;
     this.aporteIngresado = 0;
-    const modal = new bootstrap.Modal(document.getElementById('aporteModal')!);
-    modal.show();
+
+    setTimeout(() => {
+      const modalElement = document.getElementById('aporteModal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      } else {
+        this.toastr.error('No se pudo abrir el modal. Verifica que el ID esté correcto.', 'Error');
+      }
+    }, 100); // Espera breve para asegurarse de que Angular renderiza el modal
   }
 
   cerrarModal(): void {
     const modalElement = document.getElementById('aporteModal');
     if (modalElement) {
-      const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-      modal.hide();
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
     }
     this.deudaSeleccionada = null;
     this.aporteIngresado = 0;
@@ -83,6 +94,11 @@ export class DeudasComponent implements OnInit {
   guardarAporte(): void {
     if (!this.deudaSeleccionada) {
       this.toastr.error('No se pudo encontrar la deuda seleccionada.', 'Error');
+      return;
+    }
+
+    if (isNaN(this.aporteIngresado) || this.aporteIngresado <= 0) {
+      this.toastr.error('Ingrese un aporte válido.', 'Error');
       return;
     }
 

@@ -1,8 +1,8 @@
 <div class="container" style="margin-top: 80px;">
-  <h2 class="text-center text-primary fw-bold mb-4 margin-top: 80px;">💰 Lista de Deudas</h2>
+  <h2 class="text-center text-primary fw-bold mb-4" style="margin-top: 80px;">💰 Lista de Deudas</h2>
 
   <!-- SPINNER DE CARGA -->
-  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center vh-100">
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando deudas...</span>
     </div>
@@ -15,9 +15,9 @@
       <div class="card-body bg-light">
         <h5 class="text-primary fw-bold">📊 Totales</h5>
         <ul class="list-unstyled">
-          <li><strong>Total Vendido:</strong> {{ totalPrecioTotal | currency }}</li>
-          <li><strong>Total Recaudado:</strong> {{ totalAporte | currency }}</li>
-          <li><strong>Deuda Total:</strong> {{ totalDeudaTotal | currency }}</li>
+          <li><strong>Total Vendido:</strong> {{ totalPrecioTotal | currency:'USD':'symbol':'1.2-2' }}</li>
+          <li><strong>Total Recaudado:</strong> {{ totalAporte | currency:'USD':'symbol':'1.2-2' }}</li>
+          <li><strong>Deuda Total:</strong> {{ totalDeudaTotal | currency:'USD':'symbol':'1.2-2' }}</li>
         </ul>
       </div>
     </div>
@@ -31,23 +31,23 @@
         <table class="table table-striped text-center">
           <thead>
             <tr>
-              <th>Artículo</th>
-              <th>Cliente</th>
-              <th>Precio Total</th>
-              <th>Deuda Total</th>
-              <th>Estado</th>
-              <th>Aporte</th>
+              <th scope="col">Artículo</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Precio Total</th>
+              <th scope="col">Deuda Total</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Aporte</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let deuda of getDeudasPendientes() | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPagePendientes }">
+            <tr *ngFor="let deuda of deudasPendientes | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPagePendientes }">
               <td>{{ deuda.nombreArticulo }}</td>
               <td>{{ deuda.nombreCliente }}</td>
-              <td class="important">{{ deuda.precioTotal | currency }}</td>
-              <td class="important">{{ deuda.deudaTotal | currency }}</td>
+              <td class="important">{{ deuda.precioTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td class="important">{{ deuda.deudaTotal | currency:'USD':'symbol':'1.2-2' }}</td>
               <td><span class="badge bg-danger">⏳ Pendiente</span></td>
               <td>
-                <button class="btn btn-primary btn-sm fw-bold" (click)="abrirModal(deuda)">💵 Aportar</button>
+                <button class="btn btn-primary btn-sm font-weight-bold" (click)="abrirModal(deuda)">💵 Aportar</button>
               </td>
             </tr>
           </tbody>
@@ -55,6 +55,26 @@
         <pagination-controls (pageChange)="currentPagePendientes = $event" class="d-flex justify-content-center"></pagination-controls>
       </div>
     </div>
+
+    <div id="aporteModal" class="modal fade" tabindex="-1" aria-labelledby="aporteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aporteModalLabel">Registrar Aporte</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <label for="aporte" class="form-label">Cantidad a aportar</label>
+            <input type="number" id="aporte" [(ngModel)]="aporteIngresado" class="form-control">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="guardarAporte()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Deudas Completadas -->
     <div class="card shadow-sm mb-4">
@@ -65,19 +85,19 @@
         <table class="table table-striped text-center">
           <thead>
             <tr>
-              <th>Artículo</th>
-              <th>Cliente</th>
-              <th>Precio Total</th>
-              <th>Aporte Total</th>
-              <th>Estado</th>
+              <th scope="col">Artículo</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Precio Total</th>
+              <th scope="col">Aporte Total</th>
+              <th scope="col">Estado</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let deuda of getDeudasCompletadas() | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPageCompletadas }">
+            <tr *ngFor="let deuda of deudasCompletadas | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPageCompletadas }">
               <td>{{ deuda.nombreArticulo }}</td>
               <td>{{ deuda.nombreCliente }}</td>
-              <td class="important">{{ deuda.precioTotal | currency }}</td>
-              <td class="important">{{ deuda.aporte | currency }}</td>
+              <td class="important">{{ deuda.precioTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+              <td class="important">{{ deuda.aporte | currency:'USD':'symbol':'1.2-2' }}</td>
               <td><span class="badge bg-success">✅ Completada</span></td>
             </tr>
           </tbody>
